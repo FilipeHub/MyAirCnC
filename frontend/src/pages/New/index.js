@@ -1,18 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import api from '../../services/api';
 
+import './style.css'
+import camera from '../../assets/camera.svg';
 
-export default function New(){
+export default function New({ history }){
+    const [thumbnail, setThumbnail] = useState(null);
     const [company, setCompany] = useState('');
     const [techs, setTechs] = useState('');
     const [price, setPrice] = useState('');
     
-    function handleSubmit(){
-    
+    const preview = useMemo(
+        () => {return thumbnail ? URL.createObjectURL(thumbnail): null} 
+    , [thumbnail]
+    );
+
+    async function handleSubmit(event){
+        event.preventDefault();
+
+        const data = new FormData();
+        const user_id = localStorage.getItem('user')
+
+        data.append('thumbnail', thumbnail);
+        data.append('techs', techs);
+        data.append('company', company);
+        data.append('price', price);
+
+        await api.post('/spots', data, { headers: {user_id}});
+
+        history.push('/dashboard');
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="company">EMPRESA</label>
+            <label id="thumbnail" style={{backgroundImage: `url(${preview})`}}
+                className={thumbnail ? 'has-thumb' : ''}
+            >
+                <input type="file" onChange={event => setThumbnail(event.target.files[0])}
+                />
+                <img src={camera} alt="Selecione uma imagem"/>
+            </label>
+            
+            <label htmlFor="company">EMPRESA * </label>
             <input 
                 id="company"
                 placeholder="Sua empresa incrível"
@@ -20,7 +49,7 @@ export default function New(){
                 onChange={event => setCompany(event.target.value)}
             />
             
-            <label htmlFor="techs">TECNOLOGIAS <span>Separadas por vírgula</span></label>
+            <label htmlFor="techs">TECNOLOGIAS * <span>Separadas por vírgula</span></label>
             <input 
                 id="techs"
                 placeholder="Quais tecnologias usam?"
@@ -28,7 +57,7 @@ export default function New(){
                 onChange={event => setTechs(event.target.value)}
             />
             
-            <label htmlFor="price">VALOR DA DIÁRIA<span>Em branco para grátis</span></label>
+            <label htmlFor="price">VALOR DA DIÁRIA * <span>Em branco para grátis</span></label>
             <input 
                 id="price"
                 placeholder="Qual o preço da diária na sua empresa"
@@ -36,6 +65,7 @@ export default function New(){
                 onChange={event => setPrice(event.target.value)}
             />
 
+            <button className='btn' type="submit" >Cadastrar</button>
 
         </form>
 
