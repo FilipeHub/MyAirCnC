@@ -14,7 +14,7 @@ export default function Login({ navigation }){
             if (user){
                 navigation.navigate('List');
             }
-        })
+        });
     },
     []);
 
