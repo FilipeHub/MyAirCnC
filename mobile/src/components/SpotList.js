@@ -31,10 +31,10 @@ export default function SpotList( { tech } ){
                 showsHorizontalScrollIndicator={false} //Esconder a barra de rolagem
                 renderItem={( { item }) => (
                     <View style={styles.listItem}>
-                        <Image style={styles.thumbnail} source={{ uri : item.thumbnail_url }} /> 
+                        <Image style={styles.thumb} source={{ uri :  `http://192.168.24.109:3333/files/${item.thumbnail}` }} /> 
                         <Text style={styles.company}>{item.company}</Text>
                         <Text style={styles.price}>{item.price ? `R$${item.price}/dia` : 'GRATUITO'}</Text>
-                        <TouchableOpacity style={styles.button} onPress={() => { }}>
+                        <TouchableOpacity style={styles.button} onPress={() => {}} >
                             <Text style={styles.buttonText}>Solicitar reserva</Text>
                         </TouchableOpacity>
                     </View>
@@ -54,7 +54,53 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginBottom: 15,
     },
+    
     bold : {
+        fontWeight: 'bold',
+    },
+
+    list: {
+        paddingHorizontal: 20,
+    },
+
+    listItem:{
+        marginRight:15,
+    },
+
+    thumb : {
+        width:200,
+        height:120,
+        resizeMode: 'cover',
+        alignSelf: 'center',
+        borderRadius: 2,
+    },
+
+    company: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+        marginTop: 10,
+    },
+
+    price: {
+        fontSize: 15,
+        color: '#999',
+        marginTop: 5,
+
+    },
+
+    button: {
+        height:32,
+        backgroundColor: '#f05a5b',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+        marginTop: 15,
+    },
+
+    buttonText:{
+        color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
     }
 });
