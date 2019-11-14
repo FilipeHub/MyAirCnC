@@ -33,7 +33,7 @@ app.use( (req, res, next) =>{
 });
 
 app.use(cors()); //Deixando vazio qualquer aplicação pode acessar a API. { origin : 'http://localhost:3333' }
-app.use(express.json()); // Deve vir antes do use(routes). Só o que vem depois dessa inha entende instruções JSON
+app.use(express.json()); // Deve vir antes do use(routes). Só o que vem depois dessa linha entende instruções JSON
 app.use('/files', express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
